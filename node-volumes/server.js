@@ -31,17 +31,19 @@ app.post('/create', async (req, res) => {
   const tempFilePath = path.join(__dirname, 'temp', adjTitle + '.txt');
   const finalFilePath = path.join(__dirname, 'feedback', adjTitle + '.txt');
 
+  console.log('hey ho')
+
   await fs.writeFile(tempFilePath, content);
   exists(finalFilePath, async (exists) => {
     if (exists) {
       res.redirect('/exists');
     } else {
       await fs.copyFile(tempFilePath, finalFilePath);
-      
+
       await fs.unlink(tempFilePath)
       res.redirect('/');
     }
   });
 });
 
-app.listen(80);
+app.listen(process.env.PORT);
